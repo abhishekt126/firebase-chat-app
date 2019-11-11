@@ -35,20 +35,22 @@ export class ChatBox extends Component {
     }
 
     onClickHandler = ()=>{
-        let obj = {
-            user: this.state.randomUser,
-            msg: this.state.inputValue,
-            date: this.state.currentDate
+        if(this.state.inputValue && /\S/.test(this.state.inputValue)){
+            let obj = {
+                user: this.state.randomUser,
+                msg: this.state.inputValue,
+                date: this.state.currentDate
+            }
+    
+            firebase.database().ref('/message/').push(obj);
+            this.setState({
+                inputValue: ''
+            })
         }
-
-        firebase.database().ref('/message/').push(obj);
-        this.setState({
-            inputValue: ''
-        })
     }
 
     keyPressed = (e)=>{
-        if(e.key === 'Enter' && this.state.inputValue){
+        if(e.key === 'Enter'){
             this.onClickHandler();
         }
     }
